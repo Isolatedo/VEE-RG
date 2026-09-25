@@ -66,34 +66,34 @@ class FrozenAnatomicalDetector(nn.Module):
         return self.detector.forward_spatial(image)
 
 
-class FrozenRegionSelector(nn.Module):
-    def __init__(self, checkpoint_path: str):
-        super().__init__()
-        self.classifier = nn.Sequential(
-            nn.Linear(ROI_DIM, 512),
-            nn.ReLU(),
-            nn.Linear(512, 128),
-            nn.ReLU(),
-            nn.Linear(128, 1),
-        )
-        state = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
-        if isinstance(state, dict) and isinstance(state.get("state_dict"), dict):
-            state = state["state_dict"]
-        selected = {
-            key: value
-            for key, value in state.items()
-            if isinstance(key, str) and key.startswith("classifier.")
-        }
-        self.load_state_dict(selected, strict=True)
-        self.requires_grad_(False).eval()
+# class FrozenRegionSelector(nn.Module):
+#     def __init__(self, checkpoint_path: str):
+#         super().__init__()
+#         self.classifier = nn.Sequential(
+#             nn.Linear(ROI_DIM, 512),
+#             nn.ReLU(),
+#             nn.Linear(512, 128),
+#             nn.ReLU(),
+#             nn.Linear(128, 1),
+#         )
+#         state = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+#         if isinstance(state, dict) and isinstance(state.get("state_dict"), dict):
+#             state = state["state_dict"]
+#         selected = {
+#             key: value
+#             for key, value in state.items()
+#             if isinstance(key, str) and key.startswith("classifier.")
+#         }
+#         self.load_state_dict(selected, strict=True)
+#         self.requires_grad_(False).eval()
 
-    def train(self, mode: bool = True):
-        super().train(False)
-        return self
+#     def train(self, mode: bool = True):
+#         super().train(False)
+#         return self
 
-    @torch.no_grad()
-    def forward(self, roi: torch.Tensor) -> torch.Tensor:
-        return self.classifier(roi).squeeze(-1)
+#     @torch.no_grad()
+#     def forward(self, roi: torch.Tensor) -> torch.Tensor:
+#         return self.classifier(roi).squeeze(-1)
 
 
 class RegionalVisualAdapter(nn.Module):
