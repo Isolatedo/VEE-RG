@@ -15,8 +15,8 @@ model:
 
 loss:
   text: 0.4
-  change: 0.8
-  direction: 0.45
+  change: 1.0
+  direction: 0.7
   spatial: 0.15
   temperature: 0.1
   label_smoothing: 0.05
