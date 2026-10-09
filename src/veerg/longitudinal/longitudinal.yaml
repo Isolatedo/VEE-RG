@@ -1,0 +1,34 @@
+data:
+  longitudinal_dir: lab/26/VEE-RG/data/longitudinal_mimic_official
+  image_roots:
+    - lab/dataset/mimic-imagnome-jpg
+    - data/nas/sdsl/mimic_unzip/files
+  image_size: 512
+
+model:
+  dim: 256
+  hidden_dim: 512
+  context_dim: 64
+  dropout: 0.0
+  rgrg_path: lab/ckpt/rgrg_detector.pth
+  text_path: lab/ckpt/bert-base-uncased
+
+loss:
+  text: 0.4
+  change: 0.8
+  direction: 0.45
+  spatial: 0.15
+  temperature: 0.1
+  label_smoothing: 0.05
+  multilabel_smoothing: 0.10
+
+train:
+  batch_size: 32
+  learning_rate: 0.0001
+  num_epochs: 12
+  num_workers: 8
+  persistent_workers: false
+  prefetch_factor: 1
+  seed: 20260802
+  grad_clip: 1.0
+  checkpoint_dir: lab/26/VEE-RG/checkpoints/longitudinal_training

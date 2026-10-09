@@ -1,0 +1,29 @@
+data:
+  static_dir: 26/VEE-RG/data/static_mimic_official
+  pair_dir: 26/VEE-RG/data/longitudinal_mimic_official
+  image_roots:
+    - lab/dataset/mimic-imagnome-jpg
+    - data/nas/sdsl/mimic_unzip/files
+  image_size: 512
+
+model:
+  detector_path: lab/ckpt/rgrg_detector.pth
+  selector_path: lab/ckpt/rgrg_region_selector.pth
+  llm_path: lab/ckpt/PubMed-GPT-2-Medium
+  longitudinal_checkpoint: lab/26/VEE-RG/checkpoints/mimic/longitudinal/best.pth
+  hidden_dim: 1024
+  dropout: 0.1
+  selector_top_k: 8
+  selector_threshold: -1.0
+  max_length: 64
+  num_beams: 3
+  length_penalty: 1.1
+  gradient_checkpointing: true
+
+train:
+  batch_size: 6
+  learning_rate: 0.0001
+  num_epochs: 8
+  num_workers: 4
+  seed: 20260902
+  checkpoint_dir: lab/26/VEE-RG/checkpoints/regional_training
